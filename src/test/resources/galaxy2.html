@@ -1,0 +1,163 @@
+<div id="galaxy">
+
+  <h1>Galaxy</h1>
+  <div class="container">
+    <div class="tabs"><div class="selector">
+      <div class="sel_cont">
+
+        <div class="arrow_left" onclick="decrement('sgalaxy');"></div>
+        <div class="in"><b>Galaxy</b><br/><input pattern="[0-9]*" type="text" name="galaxy" id="sgalaxy" value="1" size="5" maxlength="3" tabindex="1"></div>
+        <div class="arrow_right" onclick="increment('sgalaxy');"></div>
+      </div>
+      <div class="sel_cont">
+        <div class="arrow_left" onclick="decrement('ssystem');"></div>
+        <div class="in"><b>System</b><br/><input pattern="[0-9]*" type="text" name="system" id="ssystem" value="321" size="5" maxlength="3" tabindex="2"></div>
+        <div class="arrow_right" onclick="increment('ssystem');"></div>
+      </div>
+      <div class="btn_go" onclick="loadPage('game.php?page=galaxy&mode=1&galaxy='+$('#sgalaxy').val()+'&system='+$('#ssystem').val());"></div>
+    </div></div>
+    <div class="main_outer">
+      <ul class="plastic">
+
+        <li class="arrow"><a><div class="galaxy_row"><div class="gn">1</div></div></a></li>
+        <li class="arrow"><a><div class="galaxy_row"><div class="gn">2</div></div></a></li>
+        <li class="arrow"><a><div class="galaxy_row"><div class="gn">3</div></div></a></li>
+        <li class="arrow"><a onclick="loadPage('game.php?page=galaxy&action=profile&id=240046','#s2',true,'slide');">
+
+          <div class="galaxy_row">
+            <div class="gn">4</div>
+            <div class="g_left"><img src="images/planets/small/s_dschjungelplanet07.png"></div>
+            <div class="g_right" style="width:200px;"><p>Spcemnky1 ( ranked 5880) <font color="white">(</font><font class="noob">N</font><font color="white">)</font> (*)<br/>Pearl Station<br/></p></div></div></a></li>
+        <li class="arrow"><a><div class="galaxy_row"><div class="gn">5</div></div></a></li>
+        <li class="arrow"><a><div class="galaxy_row"><div class="gn">6</div></div></a></li>
+        <li class="arrow"><a onclick="loadPage('game.php?page=galaxy&action=profile&id=212505','#s2',true,'slide');">
+
+          <div class="galaxy_row">
+            <div class="gn">7</div>
+            <div class="g_left"><img src="images/planets/small/s_normaltempplanet02.png"></div>
+            <div class="g_right" style="width:200px;"><p>DrMyeyes ( ranked 1705)  <br/>Don Kessinger<br/></p></div></div></a></li>
+        <li class="arrow"><a><div class="galaxy_row"><div class="gn">8</div></div></a></li>
+        <li class="arrow"><a><div class="galaxy_row"><div class="gn">9</div></div></a></li>
+        <li class="arrow"><a onclick="loadPage('game.php?page=galaxy&action=profile&id=237872','#s2',true,'slide');">
+
+          <div class="galaxy_row">
+            <div class="gn">10</div>
+            <div class="g_left"><img src="images/planets/small/s_wasserplanet03.png"></div>
+            <div class="g_right" style="width:200px;"><p>Spcemnky1 ( ranked 5880) <font color="white">(</font><font class="noob">N</font><font color="white">)</font> (*)<br/>Swan Station<br/></p></div></div></a></li>
+        <li class="arrow"><a><div class="galaxy_row"><div class="gn">11</div></div></a></li>
+        <li class="arrow"><a onclick="loadPage('game.php?page=galaxy&action=profile&id=234450','#s2',true,'slide');">
+
+          <div class="galaxy_row">
+            <div class="gn">12</div>
+            <div class="g_left"><img src="images/planets/small/s_wasserplanet08.png"></div>
+            <div class="g_right" style="width:200px;"><p>CHLOCHLO143 ( ranked 13766) <font color="white">(</font><font class="inactive">I</font><font color="white">)</font> <br/>Home Planet<br/></p></div></div></a></li>
+        <li class="arrow"><a><div class="galaxy_row"><div class="gn">13</div></div></a></li>
+        <li class="arrow"><a onclick="loadPage('game.php?page=galaxy&action=profile&id=242050','#s2',true,'slide');">
+
+          <div class="galaxy_row">
+            <div class="gn">14</div>
+            <div class="g_left"><img src="images/planets/small/s_eisplanet01.png"></div>
+            <div class="g_right" style="width:200px;"><p>Spcemnky1 ( ranked 5880) <font color="white">(</font><font class="noob">N</font><font color="white">)</font> (*)<br/>Orchid Station<br/></p></div></div></a></li>
+        <li class="arrow"><a onclick="loadPage('game.php?page=galaxy&action=profile&id=199731','#s2',true,'slide');">
+
+          <div class="galaxy_row">
+            <div class="gn">15</div>
+            <div class="g_left"><img src="images/planets/small/s_eisplanet09.png"></div>
+            <div class="g_right" style="width:200px;"><p>DrMyeyes ( ranked 1705)  <br/>Ernie Banks<br/></p></div></div></a></li>
+
+
+      </ul>
+    </div>
+    <div class="container_footer"></div>
+  </div>
+
+  <!-- <div class="av_fleet">
+       <b>/ fleets</b><br/>
+       <span></span> missiles available<br/>
+     <span></span> recyclers available<br/>
+     <span></span> probes available<br/>
+   </div>	-->
+  <div class="legend">
+    <b>Legend</b><br/>
+    <span class=strong>S</span> stronger player<br/>
+    <span class=vacation>V</span> Vacation Mode<br/>
+    <span class=inactive>I</span> 7 days inactive<br/>
+  </div>
+  <div class="legend">
+    <b></b><br/>
+    <span class=noob>N</span> weaker player (newbie)<br/>
+    <span class=banned>B</span> banned<br/>
+    <span class="noob">A</span> Admin<br/>
+    <span class="noob">GO</span> Game Operator<br/>
+  </div>
+
+  <script type="text/javascript" charset="utf-8">
+    $(document).ready(function(){
+      $('#s2').remove();
+      $('#s3').remove();
+      $('#s4').remove();
+      $('#s5').remove();
+      $('#s6').remove();
+      $('#write_msg').remove();
+      $('body').append('<div id="s2"></div>');
+      $('body').append('<div id="s3"></div>');
+      $('body').append('<div id="s4"></div>');
+      $('body').append('<div id="s5"></div>');
+      $('body').append('<div id="s6"></div>');
+      $('body').append('<div id="write_msg"></div>');
+    });
+    function doRenamePlanet(id){
+      $('#progress').text('Working...');
+      $('#progress').show();
+      $('#s2 .error').hide();
+
+      var newname = $('#newname').val();
+
+      var site_url = site + 'game.php?page=overview&mode=renameplanet&action=rename&id='+id+'&newname='+newname;
+      //alert(site_url);
+      $.ajax({
+        url: site_url,
+        cache: false,
+        dataType: 'html',
+        data: ({uuid : devid}),
+        success: function(response){
+          if(response == '1'){
+            loadPage();
+            jQT.goBack();
+          } else {
+            $('.error').text('Incorrect planet name entered!');
+            $('#s2 .error').show();
+          }
+          $('#progress').hide();
+        },
+        error: function(xhr, ajaxOptions, thrownError){
+          //alert("xhr: " +xhr+ "  ajaxOptions: "+ajaxOptions+"   thrownError: "+thrownError);
+          $('#progress').html('Server Error!<br/><input type="button" value="Try Again" onclick="doRenamePlanet('+id+');"/> <input type="button" value="Cancel" onclick="$(\'#progress\').hide();"/>');
+        }
+      });
+    };
+  </script>
+</div><br/><br/>
+<script type="text/javascript" charset="utf-8">
+
+  function updateResources2(){
+    //Update Metal
+    $('#metal').html('<span class="">172.05K</span>');
+
+    //Update crystal
+    $('#crystal').html('<span class="">123.38K</span>');
+
+    //Update deuterium
+    $('#deuterium').html('<span class="">35.58K</span>');
+
+    //Update energy
+    $('#energy').html('<span class="">233</span>');
+
+    //Update darkmatter
+    $('#darkmatter').html('0');
+
+    //Update message icon
+    $('#mes_icon').attr('src', 'images/new_mail.png');
+  }
+  updateResources2();
+</script>
