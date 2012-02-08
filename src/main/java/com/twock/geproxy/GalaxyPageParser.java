@@ -88,7 +88,7 @@ public class GalaxyPageParser {
           player = new Player(name, now, rank, inactive);
           players.put(name, player);
         }
-        DateTime activityTimestamp = activityTime == null || activityTime.equals("*") ? now : now.minusMinutes(Integer.parseInt(activityTime));
+        DateTime activityTimestamp = activityTime == null ? null : (activityTime.equals("*") ? now : now.minusMinutes(Integer.parseInt(activityTime)));
         Planet newPlanet = new Planet(new Coordinate(galaxyNumber, systemNumber, rowNumber), now, player, planetName, debrisMetal, debrisCrystal, activityTimestamp);
         log.debug(newPlanet);
         planets.add(newPlanet);
