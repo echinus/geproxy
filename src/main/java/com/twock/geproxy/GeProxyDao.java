@@ -10,13 +10,14 @@ import com.google.inject.persist.Transactional;
 import com.twock.geproxy.entity.Coordinate;
 import com.twock.geproxy.entity.Planet;
 import com.twock.geproxy.entity.Player;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Chris Pearson (chris@twock.com)
  */
 public class GeProxyDao {
-  private static final Logger log = Logger.getLogger(GeProxyDao.class);
+  private static final Logger log = LoggerFactory.getLogger(GeProxyDao.class);
   private final Provider<EntityManager> entityManagerProvider;
 
   @Inject

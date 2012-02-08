@@ -11,9 +11,10 @@ import com.google.inject.Inject;
 import com.twock.geproxy.entity.Coordinate;
 import com.twock.geproxy.entity.Planet;
 import com.twock.geproxy.entity.Player;
-import org.apache.log4j.Logger;
 import org.cyberneko.html.parsers.DOMParser;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -23,7 +24,7 @@ import org.xml.sax.InputSource;
  * @author Chris Pearson (chris@twock.com)
  */
 public class GalaxyPageParser {
-  private static final Logger log = Logger.getLogger(GalaxyPageParser.class);
+  private static final Logger log = LoggerFactory.getLogger(GalaxyPageParser.class);
   private static final Pattern RANK_MATCHER = Pattern.compile("\\( ranked (\\d+)\\)");
   private static final Pattern ACTIVITY_MATCHER = Pattern.compile("\\((\\d+)min \\)");
   private static final Pattern DEBRIS_MATCHER = Pattern.compile("(\\d+(?:\\.\\d+)?)([MK]?) / (\\d+(?:\\.\\d+)?)([MK]?)");
@@ -90,11 +91,11 @@ public class GalaxyPageParser {
         }
         DateTime activityTimestamp = activityTime == null ? null : (activityTime.equals("*") ? now : now.minusMinutes(Integer.parseInt(activityTime)));
         Planet newPlanet = new Planet(new Coordinate(galaxyNumber, systemNumber, rowNumber), now, player, planetName, debrisMetal, debrisCrystal, activityTimestamp);
-        log.debug(newPlanet);
+        log.debug(newPlanet.toString());
         planets.add(newPlanet);
       } else {
         Planet newPlanet = new Planet(new Coordinate(galaxyNumber, systemNumber, rowNumber), now, null, null, 0, 0, now);
-        log.debug(newPlanet);
+        log.debug(newPlanet.toString());
         planets.add(newPlanet);
       }
     }

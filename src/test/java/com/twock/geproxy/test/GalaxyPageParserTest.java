@@ -6,7 +6,8 @@ import javax.xml.xpath.XPathFactory;
 import com.twock.geproxy.GalaxyPageParser;
 import com.twock.geproxy.entity.Planet;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -14,7 +15,7 @@ import org.testng.annotations.Test;
  * @author Chris Pearson (chris@twock.com)
  */
 public class GalaxyPageParserTest {
-  private static final Logger log = Logger.getLogger(GalaxyPageParserTest.class);
+  private static final Logger log = LoggerFactory.getLogger(GalaxyPageParserTest.class);
   private List<Planet> galaxy1;
 
   @Test

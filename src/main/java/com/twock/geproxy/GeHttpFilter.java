@@ -5,17 +5,18 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import com.twock.geproxy.entity.Planet;
-import org.apache.log4j.Logger;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.littleshoot.proxy.HttpFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Chris Pearson (chris@twock.com)
  */
 public class GeHttpFilter implements HttpFilter {
-  private static final Logger log = Logger.getLogger(GeHttpFilter.class);
+  private static final Logger log = LoggerFactory.getLogger(GeHttpFilter.class);
   private static final Charset UTF8 = Charset.forName("UTF8");
   private final GalaxyPageParser galaxyPageParser;
   private final GeProxyDao geProxyDao;
@@ -31,6 +32,13 @@ public class GeHttpFilter implements HttpFilter {
     try {
       QueryStringDecoder query = new QueryStringDecoder(httpRequest.getUri());
       log.info("Filtering " + query.getPath() + " params=" + query.getParameters() + " headers=" + httpResponse.getHeaders());
+      log.debug("Request URI: " + httpRequest.getUri());
+      log.debug("Request headers: " + httpRequest.getHeaders());
+      String requestBody = httpRequest.getContent().toString(UTF8);
+      log.debug("Request text: " + requestBody);
+      QueryStringDecoder request = new QueryStringDecoder("/?" + requestBody);
+      log.debug("Request parameters: " + request.getParameters());
+
       log.debug("Page text: " + httpResponse.getContent().toString(UTF8));
       if(query.getPath().endsWith("/game.php")) {
         String pageParameter = getParameter(query, "page");
@@ -73,6 +81,13 @@ public class GeHttpFilter implements HttpFilter {
           } else {
             log.warn("Unknown galaxy page " + query.getParameters());
           }
+
+        } else if("fleet1".equals(pageParameter)) {
+          // 
+        } else if("fleet2".equals(pageParameter)) {
+
+        } else if("fleet3".equals(pageParameter)) {
+          // gone! fleet deployed, request contains details of what was sent
 
         } else {
           log.warn("Unknown game.php page: " + query.getParameters());

@@ -1,0 +1,49 @@
+<div id="fp3">
+  <div class="toolbar"><h1>Fleet</h1></div>
+
+  <h1>Fleet sent</h1>
+  <div class="container">
+    <div class="main_outer" style="padding-top:10px;">
+      <ul class="plastic">
+        <li>
+          <table>
+            <tr height="20"><th>Mission</th><th>Recycle</th></tr>
+            <tr height="20"><th>Distance</th><th>1.01K</th></tr>
+            <tr height="20"><th>Speed</th><th>4.80K</th></tr>
+            <tr height="20"><th>Fuel consumption</th><th>2.82K</th></tr>
+            <tr height="20"><th>From</th><th>1:326:10</th></tr>
+            <tr height="20"><th>Destination</th><th>1:326:7</th></tr>
+            <tr height="20"><th>Arrival time</th><th>Feb Wed 08 13:30:49</th></tr>
+            <tr height="20"><th>Return time</th><th>Feb Wed 08 14:13:19</th></tr>
+          </table>
+        </li>
+        <li>Fleet:<br/><table><tr height="20"><th>Small Cargo</th><th>100</th></tr><tr height="20"><th>Large Cargo</th><th>614</th></tr><tr height="20"><th>Colony Ship</th><th>1</th></tr><tr height="20"><th>Recycler</th><th>3</th></tr><tr height="20"><th>Espionage Probe</th><th>36</th></tr><tr height="20"><th>Bomber</th><th>5</th></tr><tr height="20"><th>Battlecruiser</th><th>5</th></tr></tr></table></li>
+        <li><a class="greenButton" onclick="jQT.goTo('#home');loadPage('game.php?page=fleet');">Close</a></li>
+      </ul>
+    </div>
+    <div class="container_footer"></div>
+  </div>
+</div><br/><br/>
+<script type="text/javascript" charset="utf-8">
+
+  function updateResources2(){
+    //Update Metal
+    $('#metal').html('<span class="red">445.34K</span>');
+
+    //Update crystal
+    $('#crystal').html('<span class="red">337.07K</span>');
+
+    //Update deuterium
+    $('#deuterium').html('<span class="red">2.35M</span>');
+
+    //Update energy
+    $('#energy').html('<span class="">0</span>');
+
+    //Update darkmatter
+    $('#darkmatter').html('0');
+
+    //Update message icon
+    $('#mes_icon').attr('src', 'images/new_mail.png');
+  }
+  updateResources2();
+</script>
