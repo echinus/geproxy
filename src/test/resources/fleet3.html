@@ -1,0 +1,49 @@
+<div id="fp3">
+  <div class="toolbar"><h1>Fleet</h1></div>
+
+  <h1>Fleet sent</h1>
+  <div class="container">
+    <div class="main_outer" style="padding-top:10px;">
+      <ul class="plastic">
+        <li>
+          <table>
+            <tr height="20"><th>Mission</th><th>Attack</th></tr>
+            <tr height="20"><th>Distance</th><th>8.40K</th></tr>
+            <tr height="20"><th>Speed</th><th>27.00K</th></tr>
+            <tr height="20"><th>Fuel consumption</th><th>423</th></tr>
+            <tr height="20"><th>From</th><th>1:326:10</th></tr>
+            <tr height="20"><th>Destination</th><th>1:266:10</th></tr>
+            <tr height="20"><th>Arrival time</th><th>Feb Wed 08 07:16:18</th></tr>
+            <tr height="20"><th>Return time</th><th>Feb Wed 08 08:07:50</th></tr>
+          </table>
+        </li>
+        <li>Fleet:<br/><table><tr height="20"><th>Small Cargo</th><th>22</th></tr></tr></table></li>
+        <li><a class="greenButton" onclick="jQT.goTo('#home');loadPage('game.php?page=fleet');">Close</a></li>
+      </ul>
+    </div>
+    <div class="container_footer"></div>
+  </div>
+</div><br/><br/>
+<script type="text/javascript" charset="utf-8">
+
+  function updateResources2(){
+    //Update Metal
+    $('#metal').html('<span class="red">664.93K</span>');
+
+    //Update crystal
+    $('#crystal').html('<span class="red">495.40K</span>');
+
+    //Update deuterium
+    $('#deuterium').html('<span class="red">376.82K</span>');
+
+    //Update energy
+    $('#energy').html('<span class="">0</span>');
+
+    //Update darkmatter
+    $('#darkmatter').html('0');
+
+    //Update message icon
+    $('#mes_icon').attr('src', 'images/new_mail.png');
+  }
+  updateResources2();
+</script>

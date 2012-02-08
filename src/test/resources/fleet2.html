@@ -1,0 +1,106 @@
+<div id="fp2">
+  <div class="toolbar"><h1>Fleet</h1><a class="back" onclick="jQT.goBack();$('#s3').html('');">Back</a></div>
+
+  <h1>Send fleet 1:326:10 - Moon</h1>
+  <div class="container">
+    <div class="main_outer">
+      <form id="fleet2">
+        <input type="hidden" name="thisresource1"  value="664927" />
+        <input type="hidden" name="thisresource2"  value="495402" />
+        <input type="hidden" name="thisresource3"  value="376824" />
+        <input type="hidden" name="consumption"    value="423" />
+        <input type="hidden" name="dist"           value="8400" />
+        <input type="hidden" name="speedfactor"    value="2" />
+        <input type="hidden" name="thisgalaxy"     value="1" />
+        <input type="hidden" name="thissystem"     value="326" />
+        <input type="hidden" name="thisplanet"     value="10" />
+        <input type="hidden" name="galaxy"         value="1" />
+        <input type="hidden" name="system"         value="266" />
+        <input type="hidden" name="planet"         value="10" />
+        <input type="hidden" name="thisplanettype" value="3" />
+        <input type="hidden" name="planettype"     value="1" />
+        <input type="hidden" name="speedallsmin"   value="27000" />
+        <input type="hidden" name="speed"          value="10" />
+        <input type="hidden" name="speedfactor"    value="2" />
+        <input type="hidden" name="usedfleet"      value="LGbkBagcBwVjZwgmBwV6VwVlVwg9" />
+        <input type="hidden" name="maxepedition"   value="0" />
+        <input type="hidden" name="curepedition"   value="0" />
+        <input type="hidden" name="fleet_group"    value="0" />
+        <input type="hidden" name="acs_target_mr"  value="0:0:0" />
+        <input type="hidden" class="ship202" name="ship202"        value="22" />
+        <input type="hidden" class="capacity202" name="capacity202"    value="5000" />
+        <input type="hidden" class="consumption202" name="consumption202" value="20" />
+        <input type="hidden" class="speed202" name="speed202"       value="27000" />
+
+        <ul class="plastic">
+          <li>
+            Mission:<br/><br/><input type="radio" name="mission" value="1" class="mission" title="Attack"  checked="checked"/><br/><input type="radio" name="mission" value="3" class="mission" title="Transport" /><br/><input type="radio" name="mission" value="5" class="mission" title="Hold Position" /><br/>
+          </li>
+          <li>
+            Resources:<br/>
+            <table>
+              <tr height="20"><th>Metal</th><th><a class="btn" style="width:30px;" onclick="maxResource('1');">max</a></th><th><input pattern="[0-9]*" class="resource1" name="resource1" onchange="calculateTransportCapacity();" type="text" style="border:1px solid #777;padding:3px;margin-left:2px;text-align:right"></th></tr>
+              <tr height="20"><th>Crystal</th><th><a class="btn" style="width:30px;" onclick="maxResource('2');">max</a></th><th><input pattern="[0-9]*" class="resource2" name="resource2" onchange="calculateTransportCapacity();" type="text" style="border:1px solid #777;padding:3px;margin-left:2px;text-align:right"></th></tr>
+              <tr height="20"><th>Deuterium</th><th><a class="btn" style="width:30px;" onclick="maxResource('3');">max</a></th><th><input pattern="[0-9]*" class="resource3" name="resource3" onchange="calculateTransportCapacity();" type="text" style="border:1px solid #777;padding:3px;margin-left:2px;text-align:right"></th></tr>
+              <tr height="20"><th style="width:120px;">Resources left</th><th></th><th><div class="remainingresources">-</div></th></tr>
+              <tr height="20"><th colspan="2"></th><th><a class="btn" onclick="maxResources()">All resources</a></th></tr>
+            </table>
+          </li>
+          <li>Stay time:<br/><select class="holdingtime" name="holdingtime" ><option value="0">0 Hour(s)</option><option value="1">1 Hour</option><option value="2">2 Hour(s)</option><option value="4">4 Hour(s)</option><option value="8">8 Hour(s)</option><option value="16">16 Hour(s)</option><option value="32">32 Hour(s)</option></select></li>
+          <li><a href="#" class="greenButton" onclick="$('#fleet2').submit();">continue</a></li>
+        </ul>
+      </form>
+    </div>
+    <div class="container_footer"></div>
+  </div>
+  <script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+      var active = true;
+      var options2 = {
+        target: '#s4',
+        url: site + 'game.php?page=fleet3&uuid='+devid,
+        type: 'POST',
+        beforeSubmit:  showLoader,
+        success: function(){
+          $('#progress').hide();
+          jQT.goTo('#s4','slide');
+          active = true;
+        }
+      };
+
+      $('#fleet2').submit(function() {
+        if(!active){
+          return false;
+        }
+        active = false;
+
+        $(this).ajaxSubmit(options2);
+        return false;
+      });
+      shortInfo();
+    });
+  </script>
+</div><br/><br/>
+<script type="text/javascript" charset="utf-8">
+
+  function updateResources2(){
+    //Update Metal
+    $('#metal').html('<span class="red">664.93K</span>');
+
+    //Update crystal
+    $('#crystal').html('<span class="red">495.40K</span>');
+
+    //Update deuterium
+    $('#deuterium').html('<span class="red">376.82K</span>');
+
+    //Update energy
+    $('#energy').html('<span class="">0</span>');
+
+    //Update darkmatter
+    $('#darkmatter').html('0');
+
+    //Update message icon
+    $('#mes_icon').attr('src', 'images/new_mail.png');
+  }
+  updateResources2();
+</script>

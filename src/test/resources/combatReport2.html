@@ -1,0 +1,47 @@
+<div id="combat_report">
+  <div class="toolbar">
+    <h1>Combat Report</h1>
+    <a class="back" onclick="jQT.goBack();">Back</a>
+  </div>
+  <div class="container">
+    <div class="main_outer" style="padding-top:10px;">
+      <ul class="plastic" style="width:800px; -webkit-user-select: text;">
+        <li style="">
+          <div id="combatscr" style="overflow:auto">
+            <table width=100%><tr><td>Attacker&nbsp;ech [1:326:10]<br>Weapons:+130%&nbsp;Shields:+130%&nbsp;Armour:+130%<table><tr><td><b>Type</b></td><td><b>L.Cargo</b></td><td><b>Battlecr.</b></td></tr><tr><td><b>Total</b></td><td>9</td><td>2</td></tr><tr><td><b>Weapons</b></td><td>11</td><td>1609</td></tr><tr><td><b>Shields</b></td><td>57</td><td>919</td></tr><tr><td><b>Armour</b></td><td>2759</td><td>16099</td></tr></table><br><br></td></tr></table><br><br><table width=100%><tr><td>Defender&nbsp;DoNPiPo [1:268:4]<br>Weapons:+130%&nbsp;Shields:+120%&nbsp;Armour:+140%<table><tr><td><b>Type</b></td><td><b>R.Launcher</b></td></tr><tr><td><b>Total</b></td><td>2</td></tr><tr><td><b>Weapons</b></td><td>183</td></tr><tr><td><b>Shields</b></td><td>44</td></tr><tr><td><b>Armour</b></td><td>480</td></tr></table><br><br></td></tr></table>The attacking fleet fires a total of 11 times with the power of 3317 upon the defender.<br>The defender's shields absorb 88 damage points<br><br>The defending fleet fires a total of 2 times with the power of 366 upon the attacker.<br>The attacker's shields absorb 114 damage points<br><br><table width=100%><tr><td>Attacker&nbsp;ech [1:326:10]<br>Weapons:+130%&nbsp;Shields:+130%&nbsp;Armour:+130%<table><tr><td><b>Type</b></td><td><b>L.Cargo</b></td><td><b>Battlecr.</b></td></tr><tr><td><b>Total</b></td><td>9</td><td>2</td></tr><tr><td><b>Weapons</b></td><td>11</td><td>1609</td></tr><tr><td><b>Shields</b></td><td>57</td><td>919</td></tr><tr><td><b>Armour</b></td><td>2759</td><td>16099</td></tr></table><br><br></td></tr></table><br><br><table width=100%><tr><td>Defender&nbsp;DoNPiPo [1:268:4]<br><br><b>Destroyed</b><br><br></td></tr></table><br><br><p>The attacker has won the battle!<br>He captures 110371 Metal, 60149 Crystal and 21110 Deuterium<br><br>The attacker has lost a total of 0 units +0 deuterium.<br>The defender has lost a total of 4,000 units +0 deuterium.<br>At these space coordinates now float 0 Metal and 0 Crystal.<br><br>The chance for a moon to arise from the debris is 0%.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="container_footer"></div>
+  </div>
+  <script type="text/javascript" charset="utf-8">
+    var combatScroll;
+    $(document).ready(function(){
+      //combatScroll = new iScroll('combatscr');
+    });
+  </script>
+</div><br/><br/>
+<script type="text/javascript" charset="utf-8">
+
+  function updateResources2(){
+    //Update Metal
+    $('#metal').html('<span class="red">664.93K</span>');
+
+    //Update crystal
+    $('#crystal').html('<span class="red">495.40K</span>');
+
+    //Update deuterium
+    $('#deuterium').html('<span class="red">372.45K</span>');
+
+    //Update energy
+    $('#energy').html('<span class="">0</span>');
+
+    //Update darkmatter
+    $('#darkmatter').html('0');
+
+    //Update message icon
+    $('#mes_icon').attr('src', 'images/new_mail.png');
+  }
+  updateResources2();
+</script>
