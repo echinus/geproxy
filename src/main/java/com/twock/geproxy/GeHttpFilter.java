@@ -4,6 +4,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import com.google.inject.Inject;
+import com.twock.geproxy.entity.Planet;
 import org.apache.log4j.Logger;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
@@ -17,10 +18,12 @@ public class GeHttpFilter implements HttpFilter {
   private static final Logger log = Logger.getLogger(GeHttpFilter.class);
   private static final Charset UTF8 = Charset.forName("UTF8");
   private final GalaxyPageParser galaxyPageParser;
+  private final GeProxyDao geProxyDao;
 
   @Inject
-  public GeHttpFilter(GalaxyPageParser galaxyPageParser) {
+  public GeHttpFilter(GalaxyPageParser galaxyPageParser, GeProxyDao geProxyDao) {
     this.galaxyPageParser = galaxyPageParser;
+    this.geProxyDao = geProxyDao;
   }
 
   @Override
@@ -61,7 +64,8 @@ public class GeHttpFilter implements HttpFilter {
           String actionParameter = getParameter(query, "action");
           if(actionParameter == null) {
             log.info("Galaxy page " + query.getParameters());
-            galaxyPageParser.parse(httpResponse.getContent().toString(UTF8));
+            List<Planet> planets = galaxyPageParser.parse(httpResponse.getContent().toString(UTF8));
+            geProxyDao.updatePlanets(planets);
 
           } else if("profile".equals(actionParameter)) {
             log.info("Profile page " + query.getParameters());

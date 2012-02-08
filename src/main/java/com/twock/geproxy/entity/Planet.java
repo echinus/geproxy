@@ -3,6 +3,7 @@ package com.twock.geproxy.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -13,6 +14,12 @@ import org.joda.time.DateTime;
 @NamedQueries({
   @NamedQuery(name = "findBySystem", query = "select p from Planet p where p.coordinate.galaxy=:galaxy and p.coordinate.system=:system")
 })
+@org.hibernate.annotations.Table(
+  appliesTo = "Planet",
+  indexes = {
+    @Index(name = "planet_galaxysystem", columnNames = {"galaxy", "system"})
+  }
+)
 public class Planet implements Serializable {
   private Coordinate coordinate;
   private DateTime lastUpdated;

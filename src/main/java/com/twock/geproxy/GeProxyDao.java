@@ -5,6 +5,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
 import com.twock.geproxy.entity.Coordinate;
 import com.twock.geproxy.entity.Planet;
@@ -16,15 +17,16 @@ import org.apache.log4j.Logger;
  */
 public class GeProxyDao {
   private static final Logger log = Logger.getLogger(GeProxyDao.class);
-  private final EntityManager entityManager;
+  private final Provider<EntityManager> entityManagerProvider;
 
   @Inject
-  public GeProxyDao(EntityManager entityManager) {
-    this.entityManager = entityManager;
+  public GeProxyDao(Provider<EntityManager> entityManagerProvider) {
+    this.entityManagerProvider = entityManagerProvider;
   }
 
   @Transactional
   public void updatePlanets(List<Planet> planets) {
+    EntityManager entityManager = entityManagerProvider.get();
     Coordinate coordinate = planets.get(0).getCoordinate();
     for(Planet planet : getPlanetsInSystem(coordinate.getGalaxy(), coordinate.getSystem())) {
       entityManager.remove(planet);
@@ -43,7 +45,7 @@ public class GeProxyDao {
   @SuppressWarnings("unchecked")
   @Transactional
   public List<Planet> getPlanetsInSystem(int galaxy, int system) {
-    Query findBySystem = entityManager.createNamedQuery("findBySystem");
+    Query findBySystem = entityManagerProvider.get().createNamedQuery("findBySystem");
     findBySystem.setParameter("galaxy", galaxy);
     findBySystem.setParameter("system", system);
     return (List<Planet>)findBySystem.getResultList();
