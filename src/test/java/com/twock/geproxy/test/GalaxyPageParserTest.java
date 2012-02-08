@@ -35,19 +35,4 @@ public class GalaxyPageParserTest {
     String galaxy = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("galaxy3.html"));
     new GalaxyPageParser(XPathFactory.newInstance()).parse(galaxy);
   }
-
-  @Test
-  public void testNewPlanets() throws Exception {
-    String galaxy = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("galaxy.html"));
-
-    Injector injector = GEProxy.createInjector();
-    List<Planet> planets = injector.getInstance(GalaxyPageParser.class).parse(galaxy);
-    GeProxyDao geProxyDao = injector.getInstance(GeProxyDao.class);
-    geProxyDao.updatePlanets(planets);
-
-    List<Planet> planetsInSystem = geProxyDao.getPlanetsInSystem(1, 324);
-    for(Planet planet : planetsInSystem) {
-      log.info("found: " + planet);
-    }
-  }
 }

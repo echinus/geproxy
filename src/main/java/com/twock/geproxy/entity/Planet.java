@@ -11,7 +11,6 @@ import org.joda.time.DateTime;
  */
 @Entity
 @NamedQueries({
-  @NamedQuery(name = "deleteBySystem", query = "delete from Planet p where p.coordinate.galaxy=:galaxy and p.coordinate.system=:system"),
   @NamedQuery(name = "findBySystem", query = "select p from Planet p where p.coordinate.galaxy=:galaxy and p.coordinate.system=:system")
 })
 public class Planet implements Serializable {

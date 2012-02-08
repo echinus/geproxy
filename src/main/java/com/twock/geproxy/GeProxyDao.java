@@ -6,6 +6,7 @@ import javax.persistence.Query;
 
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
+import com.twock.geproxy.entity.Coordinate;
 import com.twock.geproxy.entity.Planet;
 import com.twock.geproxy.entity.Player;
 import org.apache.log4j.Logger;
@@ -24,11 +25,10 @@ public class GeProxyDao {
 
   @Transactional
   public void updatePlanets(List<Planet> planets) {
-    Query deleteBySystem = entityManager.createNamedQuery("deleteBySystem");
-    deleteBySystem.setParameter("galaxy", planets.get(0).getCoordinate().getGalaxy());
-    deleteBySystem.setParameter("system", planets.get(0).getCoordinate().getSystem());
-    deleteBySystem.executeUpdate();
-
+    Coordinate coordinate = planets.get(0).getCoordinate();
+    for(Planet planet : getPlanetsInSystem(coordinate.getGalaxy(), coordinate.getSystem())) {
+      entityManager.remove(planet);
+    }
     for(Planet planet : planets) {
       if(planet.getPlayer() != null) {
         Player player = entityManager.find(Player.class, planet.getPlayer().getName());
