@@ -3,6 +3,7 @@ package com.twock.geproxy.entity;
 import java.util.Map;
 import javax.persistence.*;
 
+import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -10,6 +11,13 @@ import org.joda.time.DateTime;
  * @author Chris Pearson (chris@twock.com)
  */
 @Entity
+@org.hibernate.annotations.Table(
+  appliesTo = "FleetMovement",
+  indexes = {
+    @Index(name = "fleetmovement_from", columnNames = {"from_galaxy", "from_system", "from_row"}),
+    @Index(name = "fleetmovement_to", columnNames = {"to_galaxy", "to_system", "to_row"})
+  }
+)
 public class FleetMovement {
   private long id;
   private MissionEnum mission;
