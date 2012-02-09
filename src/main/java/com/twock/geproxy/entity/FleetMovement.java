@@ -12,7 +12,10 @@ import org.joda.time.DateTime;
 @Entity
 public class FleetMovement {
   private long id;
+  private MissionEnum mission;
   private Map<ShipTypeEnum, Integer> ships;
+  private Coordinate from;
+  private Coordinate to;
   private DateTime startTime;
   private DateTime eta;
   private DateTime returnTime;
@@ -20,9 +23,11 @@ public class FleetMovement {
   public FleetMovement() {
   }
 
-  public FleetMovement(long id, Map<ShipTypeEnum, Integer> ships, DateTime startTime, DateTime eta, DateTime returnTime) {
-    this.id = id;
+  public FleetMovement(MissionEnum mission, Map<ShipTypeEnum, Integer> ships, Coordinate from, Coordinate to, DateTime startTime, DateTime eta, DateTime returnTime) {
+    this.mission = mission;
     this.ships = ships;
+    this.from = from;
+    this.to = to;
     this.startTime = startTime;
     this.eta = eta;
     this.returnTime = returnTime;
@@ -38,14 +43,55 @@ public class FleetMovement {
     this.id = id;
   }
 
+  @Enumerated(EnumType.STRING)
+  @Column(length = 20)
+  public MissionEnum getMission() {
+    return mission;
+  }
+
+  public void setMission(MissionEnum mission) {
+    this.mission = mission;
+  }
+
   @ElementCollection
   @MapKeyEnumerated(EnumType.STRING)
+  @MapKeyColumn(length = 20)
   public Map<ShipTypeEnum, Integer> getShips() {
     return ships;
   }
 
   public void setShips(Map<ShipTypeEnum, Integer> ships) {
     this.ships = ships;
+  }
+
+  @SuppressWarnings("JpaDataSourceORMInspection")
+  @Embedded
+  @AttributeOverrides({
+    @AttributeOverride(name = "galaxy", column = @Column(name = "from_galaxy")),
+    @AttributeOverride(name = "system", column = @Column(name = "from_system")),
+    @AttributeOverride(name = "row", column = @Column(name = "from_row"))
+  })
+  public Coordinate getFrom() {
+    return from;
+  }
+
+  public void setFrom(Coordinate from) {
+    this.from = from;
+  }
+
+  @SuppressWarnings("JpaDataSourceORMInspection")
+  @Embedded
+  @AttributeOverrides({
+    @AttributeOverride(name = "galaxy", column = @Column(name = "to_galaxy")),
+    @AttributeOverride(name = "system", column = @Column(name = "to_system")),
+    @AttributeOverride(name = "row", column = @Column(name = "to_row"))
+  })
+  public Coordinate getTo() {
+    return to;
+  }
+
+  public void setTo(Coordinate to) {
+    this.to = to;
   }
 
   @Column
@@ -76,5 +122,19 @@ public class FleetMovement {
 
   public void setReturnTime(DateTime returnTime) {
     this.returnTime = returnTime;
+  }
+
+  @Override
+  public String toString() {
+    return "FleetMovement{" +
+      "id=" + id +
+      ", mission=" + mission +
+      ", ships=" + ships +
+      ", from=" + from +
+      ", to=" + to +
+      ", startTime=" + startTime +
+      ", eta=" + eta +
+      ", returnTime=" + returnTime +
+      '}';
   }
 }

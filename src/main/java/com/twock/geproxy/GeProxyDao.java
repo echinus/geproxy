@@ -7,9 +7,7 @@ import javax.persistence.Query;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
-import com.twock.geproxy.entity.Coordinate;
-import com.twock.geproxy.entity.Planet;
-import com.twock.geproxy.entity.Player;
+import com.twock.geproxy.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,5 +48,10 @@ public class GeProxyDao {
     findBySystem.setParameter("galaxy", galaxy);
     findBySystem.setParameter("system", system);
     return (List<Planet>)findBySystem.getResultList();
+  }
+
+  @Transactional
+  public void addFleetMovement(FleetMovement fleetMovement) {
+    entityManagerProvider.get().persist(fleetMovement);
   }
 }

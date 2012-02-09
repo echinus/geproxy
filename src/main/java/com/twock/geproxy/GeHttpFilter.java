@@ -4,6 +4,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import com.google.inject.Inject;
+import com.twock.geproxy.entity.FleetMovement;
 import com.twock.geproxy.entity.Planet;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
@@ -20,11 +21,13 @@ public class GeHttpFilter implements HttpFilter {
   private static final Charset UTF8 = Charset.forName("UTF8");
   private final GalaxyPageParser galaxyPageParser;
   private final GeProxyDao geProxyDao;
+  private final Fleet3PageParser fleet3PageParser;
 
   @Inject
-  public GeHttpFilter(GalaxyPageParser galaxyPageParser, GeProxyDao geProxyDao) {
+  public GeHttpFilter(GalaxyPageParser galaxyPageParser, GeProxyDao geProxyDao, Fleet3PageParser fleet3PageParser) {
     this.galaxyPageParser = galaxyPageParser;
     this.geProxyDao = geProxyDao;
+    this.fleet3PageParser = fleet3PageParser;
   }
 
   @Override
@@ -32,14 +35,16 @@ public class GeHttpFilter implements HttpFilter {
     try {
       QueryStringDecoder query = new QueryStringDecoder(httpRequest.getUri());
       log.info("Filtering " + query.getPath() + " params=" + query.getParameters() + " headers=" + httpResponse.getHeaders());
-      log.debug("Request URI: " + httpRequest.getUri());
-      log.debug("Request headers: " + httpRequest.getHeaders());
-      String requestBody = httpRequest.getContent().toString(UTF8);
-      log.debug("Request text: " + requestBody);
-      QueryStringDecoder request = new QueryStringDecoder("/?" + requestBody);
-      log.debug("Request parameters: " + request.getParameters());
+      if(log.isDebugEnabled()) {
+        log.debug("Request URI: " + httpRequest.getUri());
+        log.debug("Request headers: " + httpRequest.getHeaders());
+        String requestBody = httpRequest.getContent().toString(UTF8);
+        log.debug("Request text: " + requestBody);
+        QueryStringDecoder request = new QueryStringDecoder("/?" + requestBody);
+        log.debug("Request parameters: " + request.getParameters());
 
-      log.debug("Page text: " + httpResponse.getContent().toString(UTF8));
+        log.debug("Response text: " + httpResponse.getContent().toString(UTF8));
+      }
       if(query.getPath().endsWith("/game.php")) {
         String pageParameter = getParameter(query, "page");
         String modeParameter = getParameter(query, "mode");
@@ -57,6 +62,18 @@ public class GeHttpFilter implements HttpFilter {
 
         } else if("fleet".equals(pageParameter)) {
           log.info("Ships " + query.getParameters());
+
+        } else if("fleet1".equals(pageParameter)) {
+          log.info("Fleet1 " + query.getParameters());
+
+        } else if("fleet2".equals(pageParameter)) {
+          log.info("Fleet2 " + query.getParameters());
+
+        } else if("fleet3".equals(pageParameter)) {
+          FleetMovement fleetMovement = fleet3PageParser.parse(httpResponse.getContent().toString(UTF8));
+          geProxyDao.addFleetMovement(fleetMovement);
+          log.info("Added fleet movement " + fleetMovement);
+          // gone! fleet deployed, request contains details of what was sent
 
         } else if("messages".equals(pageParameter) && "show".equals(modeParameter)) {
           log.info("Message list " + query.getParameters());
@@ -81,13 +98,6 @@ public class GeHttpFilter implements HttpFilter {
           } else {
             log.warn("Unknown galaxy page " + query.getParameters());
           }
-
-        } else if("fleet1".equals(pageParameter)) {
-          // 
-        } else if("fleet2".equals(pageParameter)) {
-
-        } else if("fleet3".equals(pageParameter)) {
-          // gone! fleet deployed, request contains details of what was sent
 
         } else {
           log.warn("Unknown game.php page: " + query.getParameters());

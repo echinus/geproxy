@@ -45,6 +45,14 @@ public class Coordinate implements Serializable {
     this.row = row;
   }
 
+  public static Coordinate fromString(String coordinateText) {
+    String[] split = coordinateText.split(":");
+    if(split.length != 3) {
+      throw new IllegalArgumentException("Invalid coordinate " + coordinateText);
+    }
+    return new Coordinate(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
+  }
+
   @Override
   public String toString() {
     return galaxy + ":" + system + ":" + row;

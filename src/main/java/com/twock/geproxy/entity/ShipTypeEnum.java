@@ -25,4 +25,13 @@ public enum ShipTypeEnum {
     this.name = name;
     this.id = id;
   }
+
+  public static ShipTypeEnum fromName(String name) {
+    for(ShipTypeEnum shipTypeEnum : values()) {
+      if(shipTypeEnum.name.equals(name)) {
+        return shipTypeEnum;
+      }
+    }
+    throw new IllegalArgumentException("Invalid ship type " + name);
+  }
 }
