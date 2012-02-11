@@ -1,5 +1,6 @@
 package com.twock.geproxy;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.List;
 
@@ -7,9 +8,8 @@ import com.google.inject.Inject;
 import com.twock.geproxy.entity.Fleet;
 import com.twock.geproxy.entity.FleetMovement;
 import com.twock.geproxy.entity.Planet;
-import com.twock.geproxy.parsers.FleetPageParser;
-import com.twock.geproxy.parsers.Fleet3PageParser;
-import com.twock.geproxy.parsers.GalaxyPageParser;
+import com.twock.geproxy.parsers.*;
+import org.jboss.netty.buffer.ByteBufferBackedChannelBuffer;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.QueryStringDecoder;
@@ -27,13 +27,15 @@ public class GeHttpFilter implements HttpFilter {
   private final GeProxyDao geProxyDao;
   private final Fleet3PageParser fleet3PageParser;
   private final FleetPageParser fleetPageParser;
+  private final OverviewEnhancer overviewEnhancer;
 
   @Inject
-  public GeHttpFilter(GalaxyPageParser galaxyPageParser, GeProxyDao geProxyDao, Fleet3PageParser fleet3PageParser, FleetPageParser fleetPageParser) {
+  public GeHttpFilter(GalaxyPageParser galaxyPageParser, GeProxyDao geProxyDao, Fleet3PageParser fleet3PageParser, FleetPageParser fleetPageParser, OverviewEnhancer overviewEnhancer) {
     this.galaxyPageParser = galaxyPageParser;
     this.geProxyDao = geProxyDao;
     this.fleet3PageParser = fleet3PageParser;
     this.fleetPageParser = fleetPageParser;
+    this.overviewEnhancer = overviewEnhancer;
   }
 
   @Override
@@ -58,6 +60,7 @@ public class GeHttpFilter implements HttpFilter {
           log.info("Overview fleet " + query.getParameters());
 
         } else if("overview".equals(pageParameter)) {
+          httpResponse.setContent(new ByteBufferBackedChannelBuffer(ByteBuffer.wrap(overviewEnhancer.enhanceOverview(httpResponse.getContent().toString(UTF8)).getBytes(UTF8))));
           log.info("Main overview " + query.getParameters());
 
         } else if("buildings".equals(pageParameter)) {
