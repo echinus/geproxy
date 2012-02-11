@@ -8,9 +8,7 @@ import java.util.regex.Pattern;
 import javax.xml.xpath.*;
 
 import com.google.inject.Inject;
-import com.twock.geproxy.entity.Coordinate;
-import com.twock.geproxy.entity.Planet;
-import com.twock.geproxy.entity.Player;
+import com.twock.geproxy.entity.*;
 import org.cyberneko.html.parsers.DOMParser;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -90,11 +88,11 @@ public class GalaxyPageParser {
           players.put(name, player);
         }
         DateTime activityTimestamp = activityTime == null ? null : (activityTime.equals("*") ? now : now.minusMinutes(Integer.parseInt(activityTime)));
-        Planet newPlanet = new Planet(new Coordinate(galaxyNumber, systemNumber, rowNumber), now, player, planetName, debrisMetal, debrisCrystal, activityTimestamp);
+        Planet newPlanet = new Planet(new Coordinate(galaxyNumber, systemNumber, rowNumber, PlanetTypeEnum.PLANET), now, player, planetName, debrisMetal, debrisCrystal, activityTimestamp);
         log.debug(newPlanet.toString());
         planets.add(newPlanet);
       } else {
-        Planet newPlanet = new Planet(new Coordinate(galaxyNumber, systemNumber, rowNumber), now, null, null, 0, 0, null);
+        Planet newPlanet = new Planet(new Coordinate(galaxyNumber, systemNumber, rowNumber, PlanetTypeEnum.PLANET), now, null, null, 0, 0, null);
         log.debug(newPlanet.toString());
         planets.add(newPlanet);
       }

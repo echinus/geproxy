@@ -22,7 +22,7 @@ public class Fleet3PageParserTest {
   @Test
   public void parseDeploy() throws Exception {
     String response = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("fleet3deploy.html"));
-    fleetMovement = new Fleet3PageParser(XPathFactory.newInstance()).parse(response);
+    fleetMovement = new Fleet3PageParser(XPathFactory.newInstance()).parse(response, IOUtils.toString(getClass().getClassLoader().getResourceAsStream("fleet3deployrequestbody.html")));
 
     Assert.assertEquals(fleetMovement.getShips().get(ShipTypeEnum.SMALL_CARGO), Integer.valueOf(1));
     Assert.assertEquals(new Period(fleetMovement.getStartTime(), fleetMovement.getEta()).toStandardSeconds().getSeconds(), 78);

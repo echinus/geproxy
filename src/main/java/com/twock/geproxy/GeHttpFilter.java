@@ -60,7 +60,9 @@ public class GeHttpFilter implements HttpFilter {
           log.info("Overview fleet " + query.getParameters());
 
         } else if("overview".equals(pageParameter)) {
-          httpResponse.setContent(new ByteBufferBackedChannelBuffer(ByteBuffer.wrap(overviewEnhancer.enhanceOverview(httpResponse.getContent().toString(UTF8)).getBytes(UTF8))));
+          byte[] newOverview = overviewEnhancer.enhanceOverview(httpResponse.getContent().toString(UTF8)).getBytes(UTF8);
+          httpResponse.setContent(new ByteBufferBackedChannelBuffer(ByteBuffer.wrap(newOverview)));
+          httpResponse.setHeader("Content-Length", newOverview.length);
           log.info("Main overview " + query.getParameters());
 
         } else if("buildings".equals(pageParameter)) {
@@ -81,7 +83,7 @@ public class GeHttpFilter implements HttpFilter {
           log.info("Fleet2 " + query.getParameters());
 
         } else if("fleet3".equals(pageParameter)) {
-          FleetMovement fleetMovement = fleet3PageParser.parse(httpResponse.getContent().toString(UTF8));
+          FleetMovement fleetMovement = fleet3PageParser.parse(httpResponse.getContent().toString(UTF8), httpRequest.getContent().toString(UTF8));
           geProxyDao.addFleetMovement(fleetMovement);
           log.info("Added fleet movement " + fleetMovement);
           // gone! fleet deployed, request contains details of what was sent

@@ -8,6 +8,7 @@ import javax.xml.xpath.*;
 import com.google.inject.Inject;
 import com.twock.geproxy.entity.*;
 import org.cyberneko.html.parsers.DOMParser;
+import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormatter;
@@ -36,16 +37,17 @@ public class Fleet3PageParser {
     };
   }
 
-  public FleetMovement parse(String responseBody) throws Exception {
+  public FleetMovement parse(String responseBody, String requestQueryBody) throws Exception {
     DOMParser parser = new DOMParser();
     parser.parse(new InputSource(new StringReader(responseBody)));
     Document document = parser.getDocument();
     XPath path = xPath.get();
+    QueryStringDecoder requestQuery = new QueryStringDecoder("/?" + requestQueryBody);
     MissionEnum mission = MissionEnum.fromText((String)path.evaluate("//TR[TH[1]='Mission']/TH[2]", document, XPathConstants.STRING));
     DateTime arrivalTime = TIME_PARSER.parseDateTime((String)path.evaluate("//TR[TH[1]='Arrival time']/TH[2]", document, XPathConstants.STRING));
     DateTime returnTime = TIME_PARSER.parseDateTime((String)path.evaluate("//TR[TH[1]='Return time']/TH[2]", document, XPathConstants.STRING));
-    Coordinate from = Coordinate.fromString((String)path.evaluate("//TR[TH[1]='From']/TH[2]", document, XPathConstants.STRING));
-    Coordinate destination = Coordinate.fromString((String)path.evaluate("//TR[TH[1]='Destination']/TH[2]", document, XPathConstants.STRING));
+    Coordinate from = Coordinate.fromString((String)path.evaluate("//TR[TH[1]='From']/TH[2]", document, XPathConstants.STRING), PlanetTypeEnum.fromId(Integer.parseInt(requestQuery.getParameters().get("thisplanettype").get(0))));
+    Coordinate destination = Coordinate.fromString((String)path.evaluate("//TR[TH[1]='Destination']/TH[2]", document, XPathConstants.STRING), PlanetTypeEnum.fromId(Integer.parseInt(requestQuery.getParameters().get("planettype").get(0))));
     if(returnTime.compareTo(arrivalTime) < 0) {
       // in case it's the end of december, we'll always parse with this year
       returnTime.minusYears(1);

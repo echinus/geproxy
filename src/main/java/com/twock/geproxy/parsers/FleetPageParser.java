@@ -8,9 +8,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import com.google.inject.Inject;
-import com.twock.geproxy.entity.Coordinate;
-import com.twock.geproxy.entity.Fleet;
-import com.twock.geproxy.entity.ShipTypeEnum;
+import com.twock.geproxy.entity.*;
 import org.cyberneko.html.parsers.DOMParser;
 import org.joda.time.DateTime;
 import org.w3c.dom.Document;
@@ -43,6 +41,7 @@ public class FleetPageParser {
     int galaxy = Integer.parseInt((String)path.evaluate("//INPUT[@name='galaxy']/@value", document, XPathConstants.STRING));
     int system = Integer.parseInt((String)path.evaluate("//INPUT[@name='system']/@value", document, XPathConstants.STRING));
     int planet = Integer.parseInt((String)path.evaluate("//INPUT[@name='planet']/@value", document, XPathConstants.STRING));
+    PlanetTypeEnum planetType = PlanetTypeEnum.fromId(Integer.parseInt((String)path.evaluate("//INPUT[@name='planet_type']/@value", document, XPathConstants.STRING)));
 
     NodeList fleetRows = (NodeList)path.evaluate("//FORM[@id='fleet0']/TABLE/TBODY/TR[position()>=3 and position()<=last()-3]", document, XPathConstants.NODESET);
     Map<ShipTypeEnum, Integer> ships = new HashMap<ShipTypeEnum, Integer>(fleetRows.getLength());
@@ -52,6 +51,6 @@ public class FleetPageParser {
       Integer count = Integer.valueOf((String)path.evaluate("TD[2]/SMALL/text()", row, XPathConstants.STRING));
       ships.put(shipType, count);
     }
-    return new Fleet(new Coordinate(galaxy, system, planet), new DateTime(), ships);
+    return new Fleet(new Coordinate(galaxy, system, planet, planetType), new DateTime(), ships);
   }
 }
