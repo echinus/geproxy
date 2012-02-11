@@ -1,4 +1,4 @@
-package com.twock.geproxy;
+package com.twock.geproxy.parsers;
 
 import java.io.StringReader;
 import java.util.HashMap;

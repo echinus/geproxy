@@ -1,0 +1,95 @@
+<div id="fp0">
+
+  <h1>Fleet</h1>
+  <div class="container">
+    <div class="tabs"><div class="custom" onclick="loadPage('game.php?page=fleet&mode=flying','#s2',true,'slide');">Flying Fleet <small class="counter" style="font-size:10px;padding-top:0px;padding-bottom:0px;">Fleets: 6 / 15 </small></div></div>
+    <div class="main_outer">
+      <ul class="plastic">
+        <li>
+          <form id="fleet0">
+            <table>
+              <tr height="20">
+                <td colspan="3">Please select your ships for this mission:</td>
+              </tr>
+              <tr height="20">
+                <td style="width:75%">Ship Type</td>
+                <td style="width:75px;">Available</td>
+                <td style="width:65px;">Selected</td>
+              </tr>
+              <tr height="20"><td>Small Cargo<br/><small>Speed: 29000</small></td><td align="right"><small class="counter" onclick="maxShip('ship202'); shortInfo();">174</small></td><td align="right"><input pattern="[0-9]*" style="text-align:right;" type="text" class="ship202" name="ship202"  placeholder="0" onChange="shortInfo()" onKeyUp="shortInfo()" /></td></tr><tr height="20"><td>Large Cargo<br/><small>Speed: 18000</small></td><td align="right"><small class="counter" onclick="maxShip('ship203'); shortInfo();">513</small></td><td align="right"><input pattern="[0-9]*" style="text-align:right;" type="text" class="ship203" name="ship203"  placeholder="0" onChange="shortInfo()" onKeyUp="shortInfo()" /></td></tr><tr height="20"><td>Espionage Probe<br/><small>Speed: 240000000</small></td><td align="right"><small class="counter" onclick="maxShip('ship210'); shortInfo();">33</small></td><td align="right"><input pattern="[0-9]*" style="text-align:right;" type="text" class="ship210" name="ship210"  placeholder="0" onChange="shortInfo()" onKeyUp="shortInfo()" /></td></tr><tr height="20"><th colspan="3"><a class="btn" style="float:right;" onclick="maxShips();shortInfo();" >all ships</a><a style="float:right;" class="btn" onclick="noShips();shortInfo();" >no ships</a></th></tr><tr height="20"><th colspan="3"><br/><a href="#" class="greenButton" onclick="$('#fleet0').submit();">continue</a></th><tr height="30"><th colspan="3"><br/><a href="#" class="greenButton" onclick="loadPage('combatSim.php','#s2',true,'slide');">Combat Simulator</a></th>
+            </tr>
+            </table>
+            <input type="hidden" class="maxship202" name="maxship202" value="174" /><input type="hidden" class="consumption202" name="consumption202" value="20" /><input type="hidden" class="speed202" name="speed202" value="29000" /><input type="hidden" class="capacity202" name="capacity202" value="" /><input type="hidden" class="maxship203" name="maxship203" value="513" /><input type="hidden" class="consumption203" name="consumption203" value="50" /><input type="hidden" class="speed203" name="speed203" value="18000" /><input type="hidden" class="capacity203" name="capacity203" value="" /><input type="hidden" class="maxship210" name="maxship210" value="33" /><input type="hidden" class="consumption210" name="consumption210" value="1" /><input type="hidden" class="speed210" name="speed210" value="240000000" /><input type="hidden" class="capacity210" name="capacity210" value="" />
+            <input type="hidden" class="galaxy" name="galaxy" value="1" />
+            <input type="hidden" class="system" name="system" value="326" />
+            <input type="hidden" class="planet" name="planet" value="10" />
+            <input type="hidden" class="planet_type" name="planet_type" value="3" />
+            <input type="hidden" class="mission" name="mission" value="0" />
+            <input type="hidden" class="maxepedition" name="maxepedition" value="" />
+            <input type="hidden" class="curepedition" name="curepedition" value="" />
+            <input type="hidden" class="target_mission" name="target_mission" value="0" />
+          </form>
+        </li>
+      </ul>
+    </div>
+    <div class="container_footer"></div>
+  </div>
+  <script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+      $('#s2').remove();
+      $('#s3').remove();
+      $('#s4').remove();
+      $('#s5').remove();
+      $('#s6').remove();
+      $('#write_msg').remove();
+      $('body').append('<div id="s2"></div>');
+      $('body').append('<div id="s3"></div>');
+      $('body').append('<div id="s4"></div>');
+      $('body').append('<div id="s5"></div>');
+      $('body').append('<div id="s6"></div>');
+      $('body').append('<div id="write_msg"></div>');
+
+      var options0 = {
+        target: '#s2',
+        url: site + 'game.php?page=fleet1&uuid='+devid,
+        type: 'POST',
+        beforeSubmit:  showLoader,
+        success: function(){
+          $('#progress').hide();
+          jQT.goTo('#s2','slide');
+        }
+      };
+
+      $('#fleet0').submit(function() {
+        $(this).ajaxSubmit(options0);
+        return false;
+      });
+      shortInfo();
+    });
+  </script>
+</div>
+
+<br/><br/>
+<script type="text/javascript" charset="utf-8">
+
+  function updateResources2(){
+    //Update Metal
+    $('#metal').html('<span class="red">217.21K</span>');
+
+    //Update crystal
+    $('#crystal').html('<span class="red">131.62K</span>');
+
+    //Update deuterium
+    $('#deuterium').html('<span class="red">46.97K</span>');
+
+    //Update energy
+    $('#energy').html('<span class="">0</span>');
+
+    //Update darkmatter
+    $('#darkmatter').html('0');
+
+    //Update message icon
+    $('#mes_icon').attr('src', 'images/new_mail.png');
+  }
+  updateResources2();
+</script>

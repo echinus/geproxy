@@ -3,7 +3,7 @@ package com.twock.geproxy.test;
 import javax.xml.xpath.XPathFactory;
 
 import com.google.inject.Injector;
-import com.twock.geproxy.Fleet3PageParser;
+import com.twock.geproxy.parsers.Fleet3PageParser;
 import com.twock.geproxy.GEProxy;
 import com.twock.geproxy.GeProxyDao;
 import com.twock.geproxy.entity.FleetMovement;

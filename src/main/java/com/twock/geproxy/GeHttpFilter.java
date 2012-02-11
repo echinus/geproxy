@@ -4,8 +4,12 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import com.google.inject.Inject;
+import com.twock.geproxy.entity.Fleet;
 import com.twock.geproxy.entity.FleetMovement;
 import com.twock.geproxy.entity.Planet;
+import com.twock.geproxy.parsers.FleetPageParser;
+import com.twock.geproxy.parsers.Fleet3PageParser;
+import com.twock.geproxy.parsers.GalaxyPageParser;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.QueryStringDecoder;
@@ -22,12 +26,14 @@ public class GeHttpFilter implements HttpFilter {
   private final GalaxyPageParser galaxyPageParser;
   private final GeProxyDao geProxyDao;
   private final Fleet3PageParser fleet3PageParser;
+  private final FleetPageParser fleetPageParser;
 
   @Inject
-  public GeHttpFilter(GalaxyPageParser galaxyPageParser, GeProxyDao geProxyDao, Fleet3PageParser fleet3PageParser) {
+  public GeHttpFilter(GalaxyPageParser galaxyPageParser, GeProxyDao geProxyDao, Fleet3PageParser fleet3PageParser, FleetPageParser fleetPageParser) {
     this.galaxyPageParser = galaxyPageParser;
     this.geProxyDao = geProxyDao;
     this.fleet3PageParser = fleet3PageParser;
+    this.fleetPageParser = fleetPageParser;
   }
 
   @Override
@@ -61,7 +67,9 @@ public class GeHttpFilter implements HttpFilter {
           log.info("Flying fleet " + query.getParameters());
 
         } else if("fleet".equals(pageParameter)) {
-          log.info("Ships " + query.getParameters());
+          Fleet fleet = fleetPageParser.parse(httpResponse.getContent().toString(UTF8));
+          geProxyDao.updateFleet(fleet);
+          log.info("Added fleet " + fleet);
 
         } else if("fleet1".equals(pageParameter)) {
           log.info("Fleet1 " + query.getParameters());

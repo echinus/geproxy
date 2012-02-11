@@ -54,4 +54,14 @@ public class GeProxyDao {
   public void addFleetMovement(FleetMovement fleetMovement) {
     entityManagerProvider.get().persist(fleetMovement);
   }
+
+  @Transactional
+  public void updateFleet(Fleet fleet) {
+    EntityManager entityManager = entityManagerProvider.get();
+    Fleet existingFleet = entityManager.find(Fleet.class, fleet.getCoordinate());
+    if(existingFleet != null) {
+      entityManager.remove(existingFleet);
+    }
+    entityManager.persist(fleet);
+  }
 }

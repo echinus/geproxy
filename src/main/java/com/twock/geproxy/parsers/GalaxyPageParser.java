@@ -1,4 +1,4 @@
-package com.twock.geproxy;
+package com.twock.geproxy.parsers;
 
 import java.io.StringReader;
 import java.math.BigDecimal;
@@ -94,7 +94,7 @@ public class GalaxyPageParser {
         log.debug(newPlanet.toString());
         planets.add(newPlanet);
       } else {
-        Planet newPlanet = new Planet(new Coordinate(galaxyNumber, systemNumber, rowNumber), now, null, null, 0, 0, now);
+        Planet newPlanet = new Planet(new Coordinate(galaxyNumber, systemNumber, rowNumber), now, null, null, 0, 0, null);
         log.debug(newPlanet.toString());
         planets.add(newPlanet);
       }

@@ -4,9 +4,10 @@
              version="2.0">
   <persistence-unit name="com.twock.geproxy" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <class>com.twock.geproxy.entity.Fleet</class>
+    <class>com.twock.geproxy.entity.FleetMovement</class>
     <class>com.twock.geproxy.entity.Planet</class>
     <class>com.twock.geproxy.entity.Player</class>
-    <class>com.twock.geproxy.entity.FleetMovement</class>
     <properties>
       <property name="hibernate.id.new_generator_mappings" value="true"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

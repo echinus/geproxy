@@ -1,12 +1,15 @@
 package com.twock.geproxy.test;
 
 import java.util.List;
+import javax.xml.xpath.XPathFactory;
 
 import com.google.inject.Injector;
 import com.twock.geproxy.GEProxy;
-import com.twock.geproxy.GalaxyPageParser;
 import com.twock.geproxy.GeProxyDao;
+import com.twock.geproxy.entity.Fleet;
 import com.twock.geproxy.entity.Planet;
+import com.twock.geproxy.parsers.FleetPageParser;
+import com.twock.geproxy.parsers.GalaxyPageParser;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +58,16 @@ public class DaoTest {
     Assert.assertEquals(planetsInSystem.size(), 15);
     for(Planet planet : planetsInSystem) {
       log.info("found: " + planet);
+    }
+  }
+
+  @Test
+  public void persistFleet() throws Exception {
+    String response = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("fleet1.html"));
+    FleetPageParser fleetPageParser = new FleetPageParser(XPathFactory.newInstance());
+    for(int i = 0; i < 2; i++) {
+      Fleet fleet = fleetPageParser.parse(response);
+      geProxyDao.updateFleet(fleet);
     }
   }
 }

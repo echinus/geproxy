@@ -10,15 +10,15 @@ import javax.persistence.Embeddable;
 public class Coordinate implements Serializable {
   private int galaxy;
   private int system;
-  private int row;
+  private int planet;
 
   public Coordinate() {
   }
 
-  public Coordinate(int galaxy, int system, int row) {
+  public Coordinate(int galaxy, int system, int planet) {
     this.galaxy = galaxy;
     this.system = system;
-    this.row = row;
+    this.planet = planet;
   }
 
   public int getGalaxy() {
@@ -37,12 +37,12 @@ public class Coordinate implements Serializable {
     this.system = system;
   }
 
-  public int getRow() {
-    return row;
+  public int getPlanet() {
+    return planet;
   }
 
-  public void setRow(int row) {
-    this.row = row;
+  public void setPlanet(int planet) {
+    this.planet = planet;
   }
 
   public static Coordinate fromString(String coordinateText) {
@@ -55,6 +55,6 @@ public class Coordinate implements Serializable {
 
   @Override
   public String toString() {
-    return galaxy + ":" + system + ":" + row;
+    return galaxy + ":" + system + ":" + planet;
   }
 }

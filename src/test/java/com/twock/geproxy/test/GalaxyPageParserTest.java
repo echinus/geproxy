@@ -3,11 +3,9 @@ package com.twock.geproxy.test;
 import java.util.List;
 import javax.xml.xpath.XPathFactory;
 
-import com.twock.geproxy.GalaxyPageParser;
 import com.twock.geproxy.entity.Planet;
+import com.twock.geproxy.parsers.GalaxyPageParser;
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -15,7 +13,6 @@ import org.testng.annotations.Test;
  * @author Chris Pearson (chris@twock.com)
  */
 public class GalaxyPageParserTest {
-  private static final Logger log = LoggerFactory.getLogger(GalaxyPageParserTest.class);
   private List<Planet> galaxy1;
 
   @Test
@@ -32,6 +29,11 @@ public class GalaxyPageParserTest {
   @Test(dependsOnMethods = "testParse")
   public void testNoActivity() {
     Assert.assertNull(galaxy1.get(9).getLastActivity(), galaxy1.get(9).toString());
+  }
+
+  @Test(dependsOnMethods = "testParse")
+  public void testNoPlanet() {
+    Assert.assertNull(galaxy1.get(0).getLastActivity());
   }
 
   @Test

@@ -14,8 +14,8 @@ import org.joda.time.DateTime;
 @org.hibernate.annotations.Table(
   appliesTo = "FleetMovement",
   indexes = {
-    @Index(name = "fleetmovement_from", columnNames = {"from_galaxy", "from_system", "from_row"}),
-    @Index(name = "fleetmovement_to", columnNames = {"to_galaxy", "to_system", "to_row"})
+    @Index(name = "fleetmovement_from", columnNames = {"from_galaxy", "from_system", "from_planet"}),
+    @Index(name = "fleetmovement_to", columnNames = {"to_galaxy", "to_system", "to_planet"})
   }
 )
 public class FleetMovement {
@@ -77,7 +77,7 @@ public class FleetMovement {
   @AttributeOverrides({
     @AttributeOverride(name = "galaxy", column = @Column(name = "from_galaxy")),
     @AttributeOverride(name = "system", column = @Column(name = "from_system")),
-    @AttributeOverride(name = "row", column = @Column(name = "from_row"))
+    @AttributeOverride(name = "planet", column = @Column(name = "from_planet"))
   })
   public Coordinate getFrom() {
     return from;
@@ -92,7 +92,7 @@ public class FleetMovement {
   @AttributeOverrides({
     @AttributeOverride(name = "galaxy", column = @Column(name = "to_galaxy")),
     @AttributeOverride(name = "system", column = @Column(name = "to_system")),
-    @AttributeOverride(name = "row", column = @Column(name = "to_row"))
+    @AttributeOverride(name = "planet", column = @Column(name = "to_planet"))
   })
   public Coordinate getTo() {
     return to;
