@@ -67,6 +67,6 @@ public class Coordinate implements Serializable {
 
   @Override
   public String toString() {
-    return galaxy + ":" + system + ":" + planet + (PlanetTypeEnum.PLANET.equals(planetType) ? "" : "(" + planetType.name() + ")");
+    return galaxy + ":" + system + ":" + planet + (PlanetTypeEnum.PLANET.equals(planetType) ? "" : "(" + planetType.text + ")");
   }
 }
