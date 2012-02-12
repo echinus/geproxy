@@ -1,13 +1,16 @@
 package com.twock.geproxy;
 
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
 import com.twock.geproxy.entity.*;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,11 +60,55 @@ public class GeProxyDao {
 
   @Transactional
   public void updateFleet(Fleet fleet) {
+    finishFleetMovements();
     EntityManager entityManager = entityManagerProvider.get();
     Fleet existingFleet = entityManager.find(Fleet.class, fleet.getCoordinate());
     if(existingFleet != null) {
       entityManager.remove(existingFleet);
     }
     entityManager.persist(fleet);
+  }
+
+  @Transactional
+  public void finishFleetMovements() {
+    EntityManager entityManager = entityManagerProvider.get();
+    @SuppressWarnings("unchecked")
+    List<FleetMovement> fleetMovements = entityManager.createQuery("from FleetMovement").getResultList();
+    for(FleetMovement fleetMovement : fleetMovements) {
+      if(fleetMovement.getMission().returns && fleetMovement.getReturnTime().isBeforeNow()) {
+        addShips(fleetMovement.getShips(), fleetMovement.getFrom(), fleetMovement.getReturnTime());
+        entityManager.remove(fleetMovement);
+      } else if(!fleetMovement.getMission().returns && fleetMovement.getEta().isBeforeNow()) {
+        addShips(fleetMovement.getShips(), fleetMovement.getTo(), fleetMovement.getEta());
+        entityManager.remove(fleetMovement);
+      }
+    }
+  }
+
+  private void addShips(Map<ShipTypeEnum, Integer> ships, Coordinate coordinate, DateTime timestamp) {
+    EntityManager entityManager = entityManagerProvider.get();
+    Fleet fleet = entityManager.find(Fleet.class, coordinate);
+    if(fleet == null) {
+      entityManager.persist(new Fleet(coordinate, timestamp, ships));
+    } else {
+      for(Map.Entry<ShipTypeEnum, Integer> entry : ships.entrySet()) {
+        fleet.getShips().put(entry.getKey(), fleet.getShips().containsKey(entry.getKey()) ? fleet.getShips().get(entry.getKey()) + entry.getValue() : entry.getValue());
+      }
+      entityManager.flush();
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<FleetMovement> getAllFleetMovements() {
+    return entityManagerProvider.get().createQuery("from FleetMovement").getResultList();
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<Fleet> getFleetsAtPlanet(Coordinate coordinate) {
+    TypedQuery<Fleet> findByPlanet = entityManagerProvider.get().createNamedQuery("findByPlanet", Fleet.class);
+    findByPlanet.setParameter("galaxy", coordinate.getGalaxy());
+    findByPlanet.setParameter("system", coordinate.getSystem());
+    findByPlanet.setParameter("planet", coordinate.getPlanet());
+    return findByPlanet.getResultList();
   }
 }

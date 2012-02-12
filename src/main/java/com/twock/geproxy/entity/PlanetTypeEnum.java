@@ -4,14 +4,16 @@ package com.twock.geproxy.entity;
  * @author Chris Pearson (chris@twock.com)
  */
 public enum PlanetTypeEnum {
-  PLANET(1),
-  DEBRIS_FIELD(2),
-  MOON(3);
+  PLANET(1, "Planet"),
+  DEBRIS_FIELD(2, "Debris Field"),
+  MOON(3, "Moon");
 
   public final int id;
+  public final String text;
 
-  private PlanetTypeEnum(int id) {
+  private PlanetTypeEnum(int id, String text) {
     this.id = id;
+    this.text = text;
   }
 
   public static PlanetTypeEnum fromId(int id) {

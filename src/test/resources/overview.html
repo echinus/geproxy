@@ -1,0 +1,98 @@
+
+<h1>Overview</h1>
+<!--<small style="margin:0px 0px 0px 10px;">Server Time: Sat Feb 11 15:31:54</small>-->
+<div class="container">
+  <div class="tabs"><div class="custom" onclick="loadPage('game.php?page=overview&mode=showfleet','#s2',true,'slide');">Flying Fleet <small class="counter"><span class="green">3</span>/<span class="red">0</span></small></div></div>
+  <div class="main_outer">
+    <ul class="plastic">
+      <li>
+        <div>
+          <div class="overview_left">
+            <h2>
+              <span onclick="loadPage('game.php?page=overview&mode=renameplanet','#s2',true,'slide');">A3M</span> <span onclick="loadPage('game.php?page=galaxy&mode=0&galaxy=1&system=326');">[1:326:10]</span>
+            </h2>
+            <p><span>Fields:</span> <br/>2.38K km (8 / 10 )</p>
+            <p><span>Temperature:</span> <br/>approx. -61&deg;C to -18&deg;C</p>
+            <p><span>Points:</span> <br/>290.09K (Rank <a class="nowrap" onclick="loadPage('game.php?page=statistics&range=1766');">1766</a> of 16796)</p>
+            <p><span>Online:</span> <br/>798 users</p>
+          </div>
+          <div class="overview_right" style="background:url(images/planets/mond.png) no-repeat;">
+
+          </div>
+          <div class="status"><p>Free</p></div>
+        </div>
+      </li>
+      <li class="arrow pl"><img src="images/planets/dschjungelplanet02.png" onclick="loadPage('game.php?page=overview&cp=206379&re=0');"><p>A1 [1:326:4]<br/>Free</p></li><li class="arrow pl"><img src="images/planets/normaltempplanet02.png" onclick="loadPage('game.php?page=overview&cp=233132&re=0');"><p>A2 [1:326:7]<br/>Free</p></li><li class="arrow pl"><img src="images/planets/wasserplanet03.png" onclick="loadPage('game.php?page=overview&cp=201516&re=0');"><p>A3 [1:326:10]<br/>Free</p></li><li class="arrow pl"><img src="images/planets/eisplanet09.png" onclick="loadPage('game.php?page=overview&cp=207695&re=0');"><p>A4 [1:326:15]<br/>Free</p></li><li class="arrow pl"><img src="images/planets/trockenplanet09.png" onclick="loadPage('game.php?page=overview&cp=236091&re=0');"><p>B1 [1:353:1]<br/>Nanite Factory (4)<br/>(13h 10m 22s)</p></li><li class="arrow pl"><img src="images/planets/dschjungelplanet04.png" onclick="loadPage('game.php?page=overview&cp=226716&re=0');"><p>B2 [1:353:5]<br/>Free</p></li><li class="arrow pl"><img src="images/planets/eisplanet09.png" onclick="loadPage('game.php?page=overview&cp=247448&re=0');"><p>Colony [2:254:15]<br/>Free</p></li><li class="arrow pl"><img src="images/planets/dschjungelplanet06.png" onclick="loadPage('game.php?page=overview&cp=213451&re=0');"><p>D1 [3:423:4]<br/>Free</p></li>
+    </ul>
+  </div>
+  <div class="container_footer"></div>
+  <a href="#" onclick="loadPage('help/FirstSteps.html','#s2',true,'slide');" class="greenButton">First Steps</a>
+  <a href="#" onclick="loadPage('help/index.html','#s2',true,'slide');" class="grayButton" style="margin-top:5px">Help</a>
+</div>
+
+<script>function SAiOSAdPlugin()
+        SAiOSAdPlugin.prototype.showAd = function(show){
+          PhoneGap.exec(\"SAiOSAdPlugin.showAd\", show);
+        }
+SAiOSAdPlugin.prototype.prepare = function(atBottom){
+  if (!atBottom) {
+    atBottom = false;
+  }
+  PhoneGap.exec(\"SAiOSAdPlugin.prepare\", atBottom);
+}
+SAiOSAdPlugin.install = function(){
+  if ( !window.plugins )
+    window.plugins = ;
+  if ( !window.plugins.iAdPlugin )
+    window.plugins.iAdPlugin = new SAiOSAdPlugin();
+}
+PhoneGap.addConstructor(SAiOSAdPlugin.install);	</script>
+<script>
+
+  $(document).ready(function(){
+    $('.error').hide();
+    $('.toolbar').show();
+    $('.menu_btn').remove();
+    $('.resources_bar').before('<div class="menu_btn" id="menu12" onclick="jQT.goTo(\'#menu\',\'slideup\');"></div>');
+
+    $('#s2').remove();
+    $('#s3').remove();
+    $('#s4').remove();
+    $('#s5').remove();
+    $('#s6').remove();
+    $('#write_msg').remove();
+    $('body').append('<div id="s2"></div>');
+    $('body').append('<div id="s3"></div>');
+    $('body').append('<div id="s4"></div>');
+    $('body').append('<div id="s5"></div>');
+    $('body').append('<div id="s6"></div>');
+    $('body').append('<div id="write_msg"></div>');
+
+
+  });
+
+  window.plugins.iAdPlugin.showAd(false);
+</script><br/><br/>
+<script type="text/javascript" charset="utf-8">
+
+  function updateResources2(){
+    //Update Metal
+    $('#metal').html('<span class="red">4.13M</span>');
+
+    //Update crystal
+    $('#crystal').html('<span class="red">2.85M</span>');
+
+    //Update deuterium
+    $('#deuterium').html('<span class="red">3.26M</span>');
+
+    //Update energy
+    $('#energy').html('<span class="">0</span>');
+
+    //Update darkmatter
+    $('#darkmatter').html('0');
+
+    //Update message icon
+    $('#mes_icon').attr('src', 'images/new_mail.png');
+  }
+  updateResources2();
+</script>

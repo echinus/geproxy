@@ -134,6 +134,16 @@ public class FleetMovement {
     this.returnTime = returnTime;
   }
 
+  @Transient
+  public Coordinate getEventualDestination() {
+    return mission.returns ? getFrom() : getTo();
+  }
+
+  @Transient
+  public DateTime getTimeOfEventualArrival() {
+    return mission.returns ? getReturnTime() : getEta();
+  }
+
   @Override
   public String toString() {
     return "FleetMovement{" +

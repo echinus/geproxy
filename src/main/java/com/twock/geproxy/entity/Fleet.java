@@ -17,6 +17,9 @@ import org.joda.time.DateTime;
     @Index(name = "fleet_coordinate", columnNames = {"galaxy", "system", "planet"})
   }
 )
+@NamedQueries({
+  @NamedQuery(name = "findByPlanet", query = "select f from Fleet f where f.coordinate.galaxy=:galaxy and f.coordinate.system=:system and f.coordinate.planet=:planet")
+})
 public class Fleet {
   private Coordinate coordinate;
   private DateTime shipsLastUpdated;
