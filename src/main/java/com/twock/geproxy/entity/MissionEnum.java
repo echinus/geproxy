@@ -5,7 +5,10 @@ package com.twock.geproxy.entity;
  */
 public enum MissionEnum {
   ATTACK(1, "Attack", true),
+  TRANSPORT(3, "Transport", true),
   DEPLOY(4, "Deploy", false),
+  HOLD_POSITION(5, "Hold Position", true),
+  COLONIZE(7, "Colonize", false),
   RECYCLE(8, "Recycle", true);
 
   public final int id;
