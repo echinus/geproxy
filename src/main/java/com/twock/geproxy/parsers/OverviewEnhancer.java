@@ -78,8 +78,12 @@ public class OverviewEnhancer {
       }
       sb.append(movement.getMission().returns ? " via " : " from ");
       sb.append(movement.getMission().returns ? movement.getTo() : movement.getFrom());
-      sb.append(" in ").append(periodFormatter.print(new Period(DateTime.now(), movement.getTimeOfEventualArrival())));
+      DateTime now = DateTime.now();
+      sb.append(" in ").append(periodFormatter.print(new Period(now, movement.getTimeOfEventualArrival())));
       sb.append(" (").append(dateTimeFormatter.print(movement.getTimeOfEventualArrival())).append(')');
+      if(movement.getMission().returns && now.isBefore(movement.getEta())) {
+        sb.append(" [return ").append(dateTimeFormatter.print(now.plus(new Period(movement.getStartTime(), now)))).append(']');
+      }
       sb.append(": ").append(getShortString(movement.getShips()));
       if(i.hasNext() || !fleets.isEmpty()) {
         sb.append("<br/>");
