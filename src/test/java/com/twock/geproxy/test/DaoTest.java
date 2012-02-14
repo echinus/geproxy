@@ -27,7 +27,7 @@ public class DaoTest {
 
   @BeforeClass
   protected void setUp() throws Exception {
-    Injector injector = GEProxy.createInjector();
+    Injector injector = GEProxy.createInjector(8080);
     galaxyPageParser = injector.getInstance(GalaxyPageParser.class);
     geProxyDao = injector.getInstance(GeProxyDao.class);
   }

@@ -69,4 +69,40 @@ public class Coordinate implements Serializable {
   public String toString() {
     return galaxy + ":" + system + ":" + planet + (PlanetTypeEnum.PLANET.equals(planetType) ? "" : "(" + planetType.text + ")");
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if(this == o) {
+      return true;
+    }
+    if(o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Coordinate that = (Coordinate)o;
+
+    if(galaxy != that.galaxy) {
+      return false;
+    }
+    if(planet != that.planet) {
+      return false;
+    }
+    if(system != that.system) {
+      return false;
+    }
+    if(planetType != that.planetType) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = galaxy;
+    result = 31 * result + system;
+    result = 31 * result + planet;
+    result = 31 * result + (planetType != null ? planetType.hashCode() : 0);
+    return result;
+  }
 }

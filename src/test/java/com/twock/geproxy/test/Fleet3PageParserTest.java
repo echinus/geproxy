@@ -3,11 +3,11 @@ package com.twock.geproxy.test;
 import javax.xml.xpath.XPathFactory;
 
 import com.google.inject.Injector;
-import com.twock.geproxy.parsers.Fleet3PageParser;
 import com.twock.geproxy.GEProxy;
 import com.twock.geproxy.GeProxyDao;
 import com.twock.geproxy.entity.FleetMovement;
 import com.twock.geproxy.entity.ShipTypeEnum;
+import com.twock.geproxy.parsers.Fleet3PageParser;
 import org.apache.commons.io.IOUtils;
 import org.joda.time.Period;
 import org.testng.Assert;
@@ -31,7 +31,7 @@ public class Fleet3PageParserTest {
 
   @Test(dependsOnMethods = "parseDeploy")
   public void persist() {
-    Injector injector = GEProxy.createInjector();
+    Injector injector = GEProxy.createInjector(8080);
     GeProxyDao dao = injector.getInstance(GeProxyDao.class);
     dao.addFleetMovement(fleetMovement);
   }

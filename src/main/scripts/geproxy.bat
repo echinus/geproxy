@@ -1,0 +1,1 @@
+java -cp "etc;lib/*" com.twock.geproxy.GEProxy %*
