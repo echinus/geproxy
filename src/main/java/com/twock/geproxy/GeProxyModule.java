@@ -13,8 +13,6 @@ import org.littleshoot.proxy.*;
  */
 public class GeProxyModule extends AbstractModule {
   private static final String GE_HOSTANDPORT = "ge.seazonegames.com";
-  private static final String DEFAULT_USERNAME = "geproxy";
-  private static final String DEFAULT_PASSWORD = "geproxy";
   private final int listenPort;
 
   public GeProxyModule(int listenPort) {
@@ -29,19 +27,12 @@ public class GeProxyModule extends AbstractModule {
   @Provides
   @Singleton
   public HttpProxyServer getProxyServer(final GeHttpFilter geFilter) {
-    DefaultHttpProxyServer httpProxyServer = new DefaultHttpProxyServer(listenPort, new HttpResponseFilters() {
+    return new DefaultHttpProxyServer(listenPort, new HttpResponseFilters() {
       @Override
       public HttpFilter getFilter(String hostAndPort) {
         return GE_HOSTANDPORT.equals(hostAndPort) ? geFilter : null;
       }
     });
-    httpProxyServer.addProxyAuthenticationHandler(new ProxyAuthorizationHandler() {
-      @Override
-      public boolean authenticate(String user, String pass) {
-        return DEFAULT_USERNAME.equals(user) && DEFAULT_PASSWORD.equals(pass);
-      }
-    });
-    return httpProxyServer;
   }
 
   @Provides
