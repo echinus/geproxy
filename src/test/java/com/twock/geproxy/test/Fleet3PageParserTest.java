@@ -29,7 +29,13 @@ public class Fleet3PageParserTest {
     Assert.assertNull(fleetMovement.getReturnTime());
   }
 
-  @Test(dependsOnMethods = "parseDeploy")
+  @Test
+  public void parseColonize() throws Exception {
+    String response = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("fleet3colonize.html"));
+    fleetMovement = new Fleet3PageParser(XPathFactory.newInstance()).parse(response, IOUtils.toString(getClass().getClassLoader().getResourceAsStream("fleet3colonizerequestbody.html")));
+  }
+
+  @Test(dependsOnMethods = {"parseDeploy", "parseColonize"})
   public void persist() {
     Injector injector = GEProxy.createInjector(8080);
     GeProxyDao dao = injector.getInstance(GeProxyDao.class);
