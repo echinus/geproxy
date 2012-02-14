@@ -37,38 +37,36 @@ public class OverviewEnhancer {
     List<FleetMovement> fleetMovements = geProxyDao.getAllFleetMovements();
 
     Matcher coordMatcher = COORD.matcher(html);
-    coordMatcher.find();
-    Coordinate thisCoordinate = Coordinate.fromString(coordMatcher.group(1), PlanetTypeEnum.PLANET);
-    List<FleetMovement> movementsForThisPlanet = getFleetsDestinedFor(fleetMovements, thisCoordinate);
-    html = html.replaceFirst("</li>", "</li><li>" + getNewText(movementsForThisPlanet, geProxyDao.getFleetsAtPlanet(thisCoordinate)) + "</li>");
+    Coordinate viewingPlanet = null;
+    Set<Coordinate> allPlanets = new HashSet<Coordinate>();
+    while(coordMatcher.find()) {
+      Coordinate thisCoordinate = Coordinate.fromString(coordMatcher.group(1), PlanetTypeEnum.PLANET);
+      allPlanets.add(thisCoordinate);
+      if(viewingPlanet == null) {
+        viewingPlanet = thisCoordinate;
+      }
+    }
+    List<FleetMovement> movementsForThisPlanet = getFleetsDestinedFor(fleetMovements, viewingPlanet, allPlanets);
+    html = html.replaceFirst("</li>", "</li><li>" + getNewText(viewingPlanet, movementsForThisPlanet, geProxyDao.getFleetsAtPlanet(viewingPlanet)) + "</li>");
 
     Matcher matcher = PATTERN.matcher(html);
     StringBuffer sb = new StringBuffer();
     while(matcher.find()) {
       Coordinate coordinate = Coordinate.fromString(matcher.group(2), PlanetTypeEnum.PLANET);
-      movementsForThisPlanet = getFleetsDestinedFor(fleetMovements, coordinate);
+      movementsForThisPlanet = getFleetsDestinedFor(fleetMovements, coordinate, allPlanets);
       List<Fleet> fleetsAtPlanet = geProxyDao.getFleetsAtPlanet(coordinate);
 
       if(movementsForThisPlanet.isEmpty() && fleetsAtPlanet.isEmpty()) {
         matcher.appendReplacement(sb, matcher.group());
       } else {
-        log.debug("Replacing with " + matcher.group() + "<li>" + getNewText(movementsForThisPlanet, fleetsAtPlanet) + "</li>");
-        matcher.appendReplacement(sb, matcher.group() + "<li>" + getNewText(movementsForThisPlanet, fleetsAtPlanet) + "</li>");
+        matcher.appendReplacement(sb, matcher.group() + "<li>" + getNewText(coordinate, movementsForThisPlanet, fleetsAtPlanet) + "</li>");
       }
     }
     matcher.appendTail(sb);
     return sb.toString();
-
-//    StringWriter stringWriter = new StringWriter();
-//    Map<String, Object> map = new HashMap<String, Object>();
-//    map.put("fleetMovements", fleetMovements);
-//    freemarkerConfiguration.getTemplate("overview.ftl").process(map, stringWriter);
-//    String replaced = html.replace("</ul>", stringWriter.toString() + "</ul>");
-//    log.debug("New html: " + replaced);
-//    return replaced;
   }
 
-  private String getNewText(List<FleetMovement> movementsForThisPlanet, List<Fleet> fleets) {
+  private String getNewText(Coordinate thisPlanet, List<FleetMovement> movementsForThisPlanet, List<Fleet> fleets) {
     StringBuilder sb = new StringBuilder();
     for(Iterator<FleetMovement> i = movementsForThisPlanet.iterator(); i.hasNext(); ) {
       FleetMovement movement = i.next();
@@ -78,10 +76,13 @@ public class OverviewEnhancer {
       }
       sb.append(movement.getMission().returns ? " via " : " from ");
       sb.append(movement.getMission().returns ? movement.getTo() : movement.getFrom());
+      if(!samePlanet(movement.getEventualDestination(), thisPlanet)) {
+        sb.append(" to ").append(movement.getEventualDestination());
+      }
       DateTime now = DateTime.now();
       sb.append(" in ").append(periodFormatter.print(new Period(now, movement.getTimeOfEventualArrival())));
       sb.append(" (").append(dateTimeFormatter.print(movement.getTimeOfEventualArrival())).append(')');
-      if(movement.getMission().returns && now.isBefore(movement.getEta())) {
+      if(now.isBefore(movement.getEta())) {
         sb.append(" [return ").append(dateTimeFormatter.print(now.plus(new Period(movement.getStartTime(), now)))).append(']');
       }
       sb.append(": ").append(getShortString(movement.getShips()));
@@ -97,7 +98,7 @@ public class OverviewEnhancer {
         sb.append("<br/>");
       }
     }
-    log.info("New text: " + sb.toString());
+    log.debug("New text: " + sb.toString());
     return sb.toString();
   }
 
@@ -113,11 +114,11 @@ public class OverviewEnhancer {
     return sb.toString();
   }
 
-  private List<FleetMovement> getFleetsDestinedFor(List<FleetMovement> fleetMovements, Coordinate coordinate) {
+  private List<FleetMovement> getFleetsDestinedFor(List<FleetMovement> fleetMovements, Coordinate coordinate, Set<Coordinate> allPlanets) {
     List<FleetMovement> result = new ArrayList<FleetMovement>();
     for(FleetMovement fleetMovement : fleetMovements) {
-      Coordinate target = fleetMovement.getEventualDestination();
-      if(target.getGalaxy() == coordinate.getGalaxy() && target.getSystem() == coordinate.getSystem() && target.getPlanet() == coordinate.getPlanet()) {
+      Coordinate target = isAnOwnPlanet(fleetMovement.getEventualDestination(), allPlanets) ? fleetMovement.getEventualDestination() : fleetMovement.getFrom();
+      if(samePlanet(coordinate, target)) {
         result.add(fleetMovement);
       }
     }
@@ -128,5 +129,18 @@ public class OverviewEnhancer {
       }
     });
     return result;
+  }
+
+  private boolean samePlanet(Coordinate coordinate, Coordinate target) {
+    return target.getGalaxy() == coordinate.getGalaxy() && target.getSystem() == coordinate.getSystem() && target.getPlanet() == coordinate.getPlanet();
+  }
+
+  private boolean isAnOwnPlanet(Coordinate eventualDestination, Set<Coordinate> allPlanets) {
+    for(Coordinate check : allPlanets) {
+      if(samePlanet(eventualDestination, check)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
